@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginScreen from './login/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
+import AppNavigator from './navigation/AppNavigator';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -10,19 +10,21 @@ function AppContent() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color="#6366f1" />
       </View>
     );
   }
 
+  // Si NO hay usuario, mostrar Login
   if (!user) {
     return <LoginScreen />;
   }
 
+  // Si HAY usuario, mostrar navegación
   return (
     <>
-      <HomeScreen />
-      <StatusBar style="auto" />
+      <AppNavigator />
+      <StatusBar style="light" />
     </>
   );
 }
@@ -38,7 +40,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0d1117',
     alignItems: 'center',
     justifyContent: 'center',
   },

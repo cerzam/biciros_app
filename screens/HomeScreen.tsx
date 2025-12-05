@@ -10,18 +10,25 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList  } from '../navigation/AppNavigator';
 
 const { width } = Dimensions.get('window');
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface StatCard {
   id: string;
   title: string;
   value: string | number;
   icon: string;
-  colors: [string, string]
+  colors: [string, string];
 }
 
 const DashboardScreen = () => {
+  const navigation = useNavigation<NavigationProp>();
+  
   const [stats] = useState<StatCard[]>([
     {
       id: '1',
@@ -69,6 +76,11 @@ const DashboardScreen = () => {
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
+  // Función para navegar desde la barra inferior
+  const handleBottomNavPress = (screen: keyof RootStackParamList) => {
+    navigation.navigate(screen);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -109,13 +121,12 @@ const DashboardScreen = () => {
           <Text style={styles.dateText}>{getCurrentDate()}</Text>
         </View>
 
-        {/* Stats Grid */}
+        {/* Stats Grid - SIN onPress, solo visual */}
         <View style={styles.statsGrid}>
-          {stats.map((stat, index) => (
-            <TouchableOpacity 
+          {stats.map((stat) => (
+            <View 
               key={stat.id} 
               style={styles.statCardWrapper}
-              activeOpacity={0.8}
             >
               <View style={[styles.card3D, styles.statCard]}>
                 <LinearGradient
@@ -146,7 +157,7 @@ const DashboardScreen = () => {
                   <View style={styles.decorativeCircle2} />
                 </LinearGradient>
               </View>
-            </TouchableOpacity>
+            </View>
           ))}
         </View>
 
@@ -186,28 +197,38 @@ const DashboardScreen = () => {
         </View>
       </ScrollView>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation - CON NAVEGACIÓN */}
       <View style={styles.bottomNav}>
         <LinearGradient
           colors={['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)']}
           style={styles.bottomNavGradient}
         >
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity 
+            style={styles.navItem}
+            onPress={() => handleBottomNavPress('Dashboard')}
+          >
             <Ionicons name="home" size={24} color="#3b82f6" />
             <Text style={[styles.navText, styles.navTextActive]}>Home</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          
+          <TouchableOpacity 
+            style={styles.navItem}
+            onPress={() => handleBottomNavPress('Sales')}
+          >
             <Ionicons name="cart-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Ventas</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="build-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Servicios</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="cube-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Productos</Text>
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="settings-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Config</Text>
