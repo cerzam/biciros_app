@@ -223,7 +223,10 @@ const SalesScreen = () => {
                 </View>
 
                 <View style={styles.actionButtons}>
-                  <TouchableOpacity style={styles.actionButton}>
+                  <TouchableOpacity
+                    style={styles.actionButton}
+                    onPress={() => navigation.navigate('EditSale', { sale: item })}
+                  >
                     <LinearGradient
                       colors={['rgba(59, 130, 246, 0.2)', 'rgba(37, 99, 235, 0.2)']}
                       style={styles.actionButtonGradient}
@@ -233,7 +236,10 @@ const SalesScreen = () => {
                     </LinearGradient>
                   </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.actionButton}>
+                  <TouchableOpacity
+                    style={styles.actionButton}
+                    onPress={() => navigation.navigate('EditSale', { sale: item })}
+                  >
                     <LinearGradient
                       colors={['rgba(236, 72, 153, 0.2)', 'rgba(219, 39, 119, 0.2)']}
                       style={styles.actionButtonGradient}
@@ -346,11 +352,12 @@ const SalesScreen = () => {
       </View>
 
       {/* Filters */}
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.filtersContainer}
-      >
+      <View style={styles.filtersWrapper}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filtersContainer}
+        >
         {filters.map((filter) => (
           <TouchableOpacity
             key={filter.id}
@@ -382,7 +389,8 @@ const SalesScreen = () => {
             </LinearGradient>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+        </ScrollView>
+      </View>
 
       {/* Sales List */}
       {loading ? (
@@ -412,9 +420,10 @@ const SalesScreen = () => {
       )}
 
       {/* Floating Action Button */}
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.fab}
         activeOpacity={0.8}
+        onPress={() => navigation.navigate('CreateSale')}
       >
         <LinearGradient
           colors={['#6366f1', '#4f46e5']}
@@ -557,10 +566,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
   },
+  filtersWrapper: {
+    height: 56,
+    marginBottom: 8,
+  },
   filtersContainer: {
     paddingHorizontal: 24,
-    paddingBottom: 16,
-    gap: 8,
+    alignItems: 'center',
+    height: 56,
   },
   filterChip: {
     marginRight: 8,
@@ -776,7 +789,7 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 24,
-    bottom: 24,
+    bottom: 100,
     borderRadius: 28,
     overflow: 'hidden',
     shadowColor: '#6366f1',
@@ -787,6 +800,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 16,
     elevation: 10,
+    zIndex: 100,
   },
   fabGradient: {
     width: 56,

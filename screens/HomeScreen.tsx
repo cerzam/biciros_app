@@ -76,8 +76,8 @@ const DashboardScreen = () => {
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
-  // Función para navegar desde la barra inferior
-  const handleBottomNavPress = (screen: keyof RootStackParamList) => {
+  // Función para navegar desde la barra inferior (solo pantallas sin parámetros)
+  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales' | 'CreateSale') => {
     navigation.navigate(screen);
   };
 
