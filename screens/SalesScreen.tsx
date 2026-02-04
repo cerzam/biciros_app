@@ -452,7 +452,10 @@ const SalesScreen = () => {
             <Text style={[styles.navText, styles.navTextActive]}>Ventas</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Services')}
+          >
             <Ionicons name="build-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Servicios</Text>
           </TouchableOpacity>
