@@ -439,32 +439,29 @@ const SalesScreen = () => {
           colors={['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)']}
           style={styles.bottomNavGradient}
         >
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.navItem}
             onPress={() => navigation.navigate('Dashboard')}
           >
             <Ionicons name="home-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Home</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.navItem}
-            onPress={() => navigation.navigate('Sales')}
-          >
+
+          <TouchableOpacity style={styles.navItem}>
             <Ionicons name="cart" size={24} color="#3b82f6" />
             <Text style={[styles.navText, styles.navTextActive]}>Ventas</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="build-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Servicios</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="cube-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Productos</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="settings-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Config</Text>

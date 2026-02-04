@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList  } from '../navigation/AppNavigator';
+import { useAuth } from '../contexts/AuthContext';
+import { useSales } from '../hooks/useSales';
 
 const { width } = Dimensions.get('window');
 
@@ -28,37 +31,72 @@ interface StatCard {
 
 const DashboardScreen = () => {
   const navigation = useNavigation<NavigationProp>();
-  
-  const [stats] = useState<StatCard[]>([
+  const { userData, logout } = useAuth();
+  const { sales } = useSales();
+
+  // Calcular estadísticas reales de ventas
+  const totalVentas = sales.length;
+  const ventasPendientes = sales.filter(s => s.estado === 'pendiente').length;
+  const ingresos = sales
+    .filter(s => s.estado === 'completada')
+    .reduce((sum, s) => sum + s.total, 0);
+  const formatIngresos = ingresos >= 1000
+    ? `$${(ingresos / 1000).toFixed(1)}k`
+    : `$${ingresos}`;
+
+  const stats: StatCard[] = [
     {
       id: '1',
       title: 'Ventas',
-      value: 15,
+      value: totalVentas,
       icon: 'cart',
       colors: ['rgba(99, 102, 241, 0.8)', 'rgba(79, 70, 229, 0.7)'],
     },
     {
       id: '2',
-      title: 'Productos',
-      value: 45,
-      icon: 'cube',
-      colors: ['rgba(236, 72, 153, 0.8)', 'rgba(219, 39, 119, 0.7)'],
+      title: 'Pendientes',
+      value: ventasPendientes,
+      icon: 'time',
+      colors: ['rgba(251, 191, 36, 0.8)', 'rgba(245, 158, 11, 0.7)'],
     },
     {
       id: '3',
-      title: 'Servicios',
-      value: 8,
-      icon: 'build',
+      title: 'Completadas',
+      value: totalVentas - ventasPendientes,
+      icon: 'checkmark-circle',
       colors: ['rgba(34, 211, 238, 0.8)', 'rgba(6, 182, 212, 0.7)'],
     },
     {
       id: '4',
       title: 'Ingresos',
-      value: '$5.2k',
+      value: formatIngresos,
       icon: 'cash',
       colors: ['rgba(52, 211, 153, 0.8)', 'rgba(16, 185, 129, 0.7)'],
     },
-  ]);
+  ];
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Cerrar Sesión',
+      '¿Estás seguro de que deseas cerrar sesión?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Cerrar Sesión',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await logout();
+            } catch (error) {
+              Alert.alert('Error', 'No se pudo cerrar sesión');
+            }
+          }
+        },
+      ]
+    );
+  };
+
+  const userName = userData?.nombre || 'Usuario';
 
   const getCurrentDate = () => {
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -76,8 +114,8 @@ const DashboardScreen = () => {
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
-  // Función para navegar desde la barra inferior (solo pantallas sin parámetros)
-  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales' | 'CreateSale') => {
+  // Función para navegar desde la barra inferior
+  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales') => {
     navigation.navigate(screen);
   };
 
@@ -94,19 +132,19 @@ const DashboardScreen = () => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={28} color="#fff" />
+        <TouchableOpacity style={styles.menuButton} onPress={handleLogout}>
+          <Ionicons name="log-out-outline" size={28} color="#fff" />
         </TouchableOpacity>
-        
+
         <Text style={styles.logo}>BICIROS</Text>
-        
+
         <View style={styles.profileButton}>
           <LinearGradient
             colors={['rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)']}
             style={styles.profileGradient}
           >
             <Ionicons name="person" size={20} color="#fff" />
-            <Text style={styles.profileText}>Admin</Text>
+            <Text style={styles.profileText}>{userName}</Text>
           </LinearGradient>
         </View>
       </View>
@@ -117,7 +155,7 @@ const DashboardScreen = () => {
       >
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Hola, Admin 👋</Text>
+          <Text style={styles.welcomeText}>Hola, {userName}</Text>
           <Text style={styles.dateText}>{getCurrentDate()}</Text>
         </View>
 
@@ -170,28 +208,40 @@ const DashboardScreen = () => {
             >
               <View style={styles.activityHeader}>
                 <Text style={styles.activityTitle}>Actividad Reciente</Text>
-                <Ionicons name="chevron-forward" size={20} color="#fff" />
-              </View>
-              
-              <View style={styles.activityItem}>
-                <View style={styles.activityIcon}>
-                  <Ionicons name="checkmark-circle" size={24} color="#52c41a" />
-                </View>
-                <View style={styles.activityDetails}>
-                  <Text style={styles.activityText}>Nueva venta registrada</Text>
-                  <Text style={styles.activityTime}>Hace 5 minutos</Text>
-                </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Sales')}>
+                  <Ionicons name="chevron-forward" size={20} color="#fff" />
+                </TouchableOpacity>
               </View>
 
-              <View style={styles.activityItem}>
-                <View style={styles.activityIcon}>
-                  <Ionicons name="cube" size={24} color="#3b82f6" />
+              {sales.slice(0, 3).map((sale) => (
+                <View key={sale.id} style={styles.activityItem}>
+                  <View style={styles.activityIcon}>
+                    <Ionicons
+                      name={sale.estado === 'completada' ? 'checkmark-circle' : 'time'}
+                      size={24}
+                      color={sale.estado === 'completada' ? '#52c41a' : '#fbbf24'}
+                    />
+                  </View>
+                  <View style={styles.activityDetails}>
+                    <Text style={styles.activityText}>
+                      {sale.cliente} - ${sale.total.toLocaleString('es-MX')}
+                    </Text>
+                    <Text style={styles.activityTime}>{sale.producto}</Text>
+                  </View>
                 </View>
-                <View style={styles.activityDetails}>
-                  <Text style={styles.activityText}>Producto agregado</Text>
-                  <Text style={styles.activityTime}>Hace 1 hora</Text>
+              ))}
+
+              {sales.length === 0 && (
+                <View style={styles.activityItem}>
+                  <View style={styles.activityIcon}>
+                    <Ionicons name="information-circle" size={24} color="#64748b" />
+                  </View>
+                  <View style={styles.activityDetails}>
+                    <Text style={styles.activityText}>Sin actividad reciente</Text>
+                    <Text style={styles.activityTime}>Registra tu primera venta</Text>
+                  </View>
                 </View>
-              </View>
+              )}
             </LinearGradient>
           </View>
         </View>
@@ -203,32 +253,32 @@ const DashboardScreen = () => {
           colors={['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)']}
           style={styles.bottomNavGradient}
         >
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.navItem}
             onPress={() => handleBottomNavPress('Dashboard')}
           >
             <Ionicons name="home" size={24} color="#3b82f6" />
             <Text style={[styles.navText, styles.navTextActive]}>Home</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.navItem}
             onPress={() => handleBottomNavPress('Sales')}
           >
             <Ionicons name="cart-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Ventas</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="build-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Servicios</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="cube-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Productos</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={styles.navItem}>
             <Ionicons name="settings-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Config</Text>

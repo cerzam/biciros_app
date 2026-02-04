@@ -11,28 +11,24 @@ import EditSaleScreen from '../screens/EditSaleScreen';
 // Importar tipos
 import { Sale } from '../hooks/useSales';
 
-// Definir tipos de navegación - SOLO Stack, sin Tabs
+// Definir tipos de navegación
 export type RootStackParamList = {
   Dashboard: undefined;
   Sales: undefined;
   CreateSale: undefined;
   EditSale: { sale: Sale };
-  // Agrega más pantallas aquí cuando las crees
-  // Services: undefined;
-  // Products: undefined;
-  // Settings: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// Navegador principal (sin Bottom Tabs de React Navigation)
+// Navegador principal
 export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: 'none',
         }}
         initialRouteName="Dashboard"
       >
