@@ -7,6 +7,7 @@ import DashboardScreen from '../screens/HomeScreen';
 import SalesScreen from '../screens/SalesScreen';
 import CreateSaleScreen from '../screens/CreateSaleScreen';
 import EditSaleScreen from '../screens/EditSaleScreen';
+import ServicesScreen from '../screens/ServicesScreen';
 
 // Importar tipos
 import { Sale } from '../hooks/useSales';
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   Sales: undefined;
   CreateSale: undefined;
   EditSale: { sale: Sale };
+  Services: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +38,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Sales" component={SalesScreen} />
         <Stack.Screen name="CreateSale" component={CreateSaleScreen} />
         <Stack.Screen name="EditSale" component={EditSaleScreen} />
+        <Stack.Screen name="Services" component={ServicesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -115,7 +115,7 @@ const DashboardScreen = () => {
   };
 
   // Función para navegar desde la barra inferior
-  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales') => {
+  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales' | 'Services') => {
     navigation.navigate(screen);
   };
 
@@ -269,7 +269,10 @@ const DashboardScreen = () => {
             <Text style={styles.navText}>Ventas</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => handleBottomNavPress('Services')}
+          >
             <Ionicons name="build-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Servicios</Text>
           </TouchableOpacity>
