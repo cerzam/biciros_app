@@ -282,7 +282,7 @@ const DashboardScreen = () => {
             <Text style={styles.navText}>Productos</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Config')}>
             <Ionicons name="settings-outline" size={24} color="#64748b" />
             <Text style={styles.navText}>Config</Text>
           </TouchableOpacity>
