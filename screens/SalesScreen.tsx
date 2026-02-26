@@ -19,6 +19,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useSales, Sale } from '../hooks/useSales';
 import { useTheme } from '../contexts/ThemeContext';
+import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
 
@@ -435,44 +436,7 @@ const SalesScreen = () => {
         </LinearGradient>
       </TouchableOpacity>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <LinearGradient
-          colors={theme.navBackground}
-          style={[styles.bottomNavGradient, { borderTopColor: theme.border }]}
-        >
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => navigation.navigate('Dashboard')}
-          >
-            <Ionicons name="home-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="cart" size={24} color={theme.navTextActive} />
-            <Text style={[styles.navText, { color: theme.navTextActive }]}>Ventas</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => navigation.navigate('Services')}
-          >
-            <Ionicons name="build-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Servicios</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Products')}>
-            <Ionicons name="cube-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Productos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Config')}>
-            <Ionicons name="settings-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Config</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+      <BottomNavBar active="Sales" />
     </View>
   );
 };
@@ -809,34 +773,6 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  bottomNavGradient: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingBottom: 28,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  navItem: {
-    alignItems: 'center',
-    padding: 8,
-  },
-  navText: {
-    fontSize: 10,
-    color: '#64748b',
-    marginTop: 4,
-    fontWeight: '600',
-  },
-  navTextActive: {
-    color: '#3b82f6',
   },
 });
 

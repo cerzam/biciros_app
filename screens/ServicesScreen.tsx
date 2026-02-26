@@ -20,6 +20,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useServices, Service, NewService, generateServiceNumber } from '../hooks/useServices';
 import { useTheme } from '../contexts/ThemeContext';
+import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
 
@@ -768,35 +769,7 @@ const ServicesScreen = () => {
         </LinearGradient>
       </TouchableOpacity>
 
-      {/* Bottom Nav */}
-      <View style={styles.bottomNav}>
-        <LinearGradient colors={theme.navBackground} style={[styles.bottomNavGradient, { borderTopColor: theme.border }]}>
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Dashboard')}>
-            <Ionicons name="home-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Sales')}>
-            <Ionicons name="cart-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Ventas</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="build" size={24} color={theme.navTextActive} />
-            <Text style={[styles.navText, { color: theme.navTextActive }]}>Servicios</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Products')}>
-            <Ionicons name="cube-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Productos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Config')}>
-            <Ionicons name="settings-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Config</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+      <BottomNavBar active="Services" />
 
       {renderModal()}
     </View>
@@ -951,19 +924,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   fabGradient: { width: 56, height: 56, justifyContent: 'center', alignItems: 'center' },
-  bottomNav: { position: 'absolute', bottom: 0, left: 0, right: 0 },
-  bottomNavGradient: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingBottom: 28,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  navItem: { alignItems: 'center', padding: 8 },
-  navText: { fontSize: 10, color: '#64748b', marginTop: 4, fontWeight: '600' },
-  navTextActive: { color: '#3b82f6' },
   // Modal
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.7)', justifyContent: 'flex-end' },
   modalContent: { borderTopLeftRadius: 24, borderTopRightRadius: 24, overflow: 'hidden', maxHeight: '90%' },
