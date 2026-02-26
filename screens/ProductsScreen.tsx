@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useProducts, Product, NewProduct, ProductSpecifications } from '../hooks/useProducts';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
@@ -66,6 +67,7 @@ const ProductsScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<NewProduct>(initialFormData);
+  const { theme, isDarkMode } = useTheme();
 
   const { products, loading, error, addProduct, updateProduct, deleteProduct } = useProducts();
 
@@ -263,8 +265,8 @@ const ProductsScreen = () => {
       >
         <View style={[styles.card3D, styles.productCard]}>
           <LinearGradient
-            colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-            style={styles.productCardInner}
+            colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+            style={[styles.productCardInner, { borderColor: theme.border }]}
           >
             {/* Destacado Badge */}
             {item.destacado_producto && (
@@ -278,20 +280,20 @@ const ProductsScreen = () => {
             <View style={styles.productCardHeader}>
               <View style={styles.productInfo}>
                 <View style={styles.iconContainer}>
-                  <LinearGradient colors={['rgba(99, 102, 241, 0.8)', 'rgba(79, 70, 229, 0.7)']} style={styles.iconBg}>
+                  <LinearGradient colors={theme.primaryGradient} style={styles.iconBg}>
                     <Ionicons name={getCategoryIcon(item.categoria_producto) as any} size={24} color="#fff" />
                   </LinearGradient>
                 </View>
                 <View style={styles.productDetails}>
-                  <Text style={styles.productBrand}>{item.marca_producto}</Text>
-                  <Text style={styles.productName}>{item.nombre_producto}</Text>
-                  <Text style={styles.productModel}>{item.modelo_producto}</Text>
+                  <Text style={[styles.productBrand, { color: theme.primary }]}>{item.marca_producto}</Text>
+                  <Text style={[styles.productName, { color: theme.textPrimary }]}>{item.nombre_producto}</Text>
+                  <Text style={[styles.productModel, { color: theme.textSecondary }]}>{item.modelo_producto}</Text>
                 </View>
               </View>
 
               <View style={styles.priceContainer}>
-                <Text style={styles.priceLabel}>Precio</Text>
-                <Text style={styles.priceValue}>${item.precio_producto.toLocaleString('es-MX')}</Text>
+                <Text style={[styles.priceLabel, { color: theme.textMuted }]}>Precio</Text>
+                <Text style={[styles.priceValue, { color: theme.success }]}>${item.precio_producto.toLocaleString('es-MX')}</Text>
               </View>
             </View>
 
@@ -299,7 +301,7 @@ const ProductsScreen = () => {
             <View style={styles.stockRow}>
               <View style={styles.stockInfoItem}>
                 <View style={[styles.stockIndicator, { backgroundColor: stockStatus.color }]} />
-                <Text style={styles.stockText}>
+                <Text style={[styles.stockText, { color: theme.textPrimary }]}>
                   {item.stock_producto} unidades
                 </Text>
                 <Text style={[styles.stockStatusText, { color: stockStatus.color }]}>
@@ -318,22 +320,22 @@ const ProductsScreen = () => {
               <View style={styles.infoRow}>
                 {specs.velocidades && (
                   <View style={styles.infoItem}>
-                    <Ionicons name="speedometer-outline" size={16} color="#94a3b8" />
-                    <Text style={styles.infoLabel}>Velocidades</Text>
-                    <Text style={styles.infoValue}>{specs.velocidades}</Text>
+                    <Ionicons name="speedometer-outline" size={16} color={theme.textSecondary} />
+                    <Text style={[styles.infoLabel, { color: theme.textMuted }]}>Velocidades</Text>
+                    <Text style={[styles.infoValue, { color: theme.textPrimary }]}>{specs.velocidades}</Text>
                   </View>
                 )}
                 {specs.tamañoRueda && (
                   <View style={styles.infoItem}>
-                    <Ionicons name="ellipse-outline" size={16} color="#94a3b8" />
-                    <Text style={styles.infoLabel}>Rueda</Text>
-                    <Text style={styles.infoValue}>{specs.tamañoRueda}</Text>
+                    <Ionicons name="ellipse-outline" size={16} color={theme.textSecondary} />
+                    <Text style={[styles.infoLabel, { color: theme.textMuted }]}>Rueda</Text>
+                    <Text style={[styles.infoValue, { color: theme.textPrimary }]}>{specs.tamañoRueda}</Text>
                   </View>
                 )}
                 <View style={styles.infoItem}>
-                  <Ionicons name={item.disponible_producto ? 'checkmark-circle' : 'close-circle'} size={16} color={item.disponible_producto ? '#34d399' : '#ef4444'} />
-                  <Text style={styles.infoLabel}>Estado</Text>
-                  <Text style={[styles.infoValue, { color: item.disponible_producto ? '#34d399' : '#ef4444' }]}>
+                  <Ionicons name={item.disponible_producto ? 'checkmark-circle' : 'close-circle'} size={16} color={item.disponible_producto ? theme.success : theme.error} />
+                  <Text style={[styles.infoLabel, { color: theme.textMuted }]}>Estado</Text>
+                  <Text style={[styles.infoValue, { color: item.disponible_producto ? theme.success : theme.error }]}>
                     {item.disponible_producto ? 'Disp.' : 'No Disp.'}
                   </Text>
                 </View>
@@ -343,49 +345,49 @@ const ProductsScreen = () => {
             {/* Expanded Details */}
             {isExpanded && (
               <View style={styles.expandedSection}>
-                <View style={styles.divider} />
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
 
                 {/* Descripción */}
                 {item.descripcion_producto && (
                   <View style={styles.detailGroup}>
-                    <Text style={styles.detailLabel}>Descripción:</Text>
-                    <Text style={styles.detailValue}>{item.descripcion_producto}</Text>
+                    <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>Descripción:</Text>
+                    <Text style={[styles.detailValue, { color: theme.textPrimary }]}>{item.descripcion_producto}</Text>
                   </View>
                 )}
 
                 {/* Especificaciones */}
                 {(specs.color || specs.cuadro || specs.peso || specs.tamañoRueda || specs.velocidades) && (
                   <View style={styles.detailGroup}>
-                    <Text style={styles.detailLabel}>Especificaciones:</Text>
+                    <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>Especificaciones:</Text>
                     <View style={styles.specsGrid}>
                       {specs.color && (
                         <View style={styles.specItem}>
-                          <Text style={styles.specLabel}>Color:</Text>
-                          <Text style={styles.specValue}>{specs.color}</Text>
+                          <Text style={[styles.specLabel, { color: theme.textMuted }]}>Color:</Text>
+                          <Text style={[styles.specValue, { color: theme.textPrimary }]}>{specs.color}</Text>
                         </View>
                       )}
                       {specs.cuadro && (
                         <View style={styles.specItem}>
-                          <Text style={styles.specLabel}>Cuadro:</Text>
-                          <Text style={styles.specValue}>{specs.cuadro}</Text>
+                          <Text style={[styles.specLabel, { color: theme.textMuted }]}>Cuadro:</Text>
+                          <Text style={[styles.specValue, { color: theme.textPrimary }]}>{specs.cuadro}</Text>
                         </View>
                       )}
                       {specs.peso && (
                         <View style={styles.specItem}>
-                          <Text style={styles.specLabel}>Peso:</Text>
-                          <Text style={styles.specValue}>{specs.peso}</Text>
+                          <Text style={[styles.specLabel, { color: theme.textMuted }]}>Peso:</Text>
+                          <Text style={[styles.specValue, { color: theme.textPrimary }]}>{specs.peso}</Text>
                         </View>
                       )}
                       {specs.tamañoRueda && (
                         <View style={styles.specItem}>
-                          <Text style={styles.specLabel}>Rueda:</Text>
-                          <Text style={styles.specValue}>{specs.tamañoRueda}</Text>
+                          <Text style={[styles.specLabel, { color: theme.textMuted }]}>Rueda:</Text>
+                          <Text style={[styles.specValue, { color: theme.textPrimary }]}>{specs.tamañoRueda}</Text>
                         </View>
                       )}
                       {specs.velocidades && (
                         <View style={styles.specItem}>
-                          <Text style={styles.specLabel}>Velocidades:</Text>
-                          <Text style={styles.specValue}>{specs.velocidades}</Text>
+                          <Text style={[styles.specLabel, { color: theme.textMuted }]}>Velocidades:</Text>
+                          <Text style={[styles.specValue, { color: theme.textPrimary }]}>{specs.velocidades}</Text>
                         </View>
                       )}
                     </View>
@@ -393,9 +395,9 @@ const ProductsScreen = () => {
                 )}
 
                 {/* Valor en inventario */}
-                <View style={styles.inventoryValue}>
-                  <Text style={styles.inventoryLabel}>Valor en inventario:</Text>
-                  <Text style={styles.inventoryAmount}>
+                <View style={[styles.inventoryValue, { backgroundColor: `${theme.success}15` }]}>
+                  <Text style={[styles.inventoryLabel, { color: theme.textSecondary }]}>Valor en inventario:</Text>
+                  <Text style={[styles.inventoryAmount, { color: theme.success }]}>
                     ${(item.precio_producto * item.stock_producto).toLocaleString('es-MX')}
                   </Text>
                 </View>
@@ -461,7 +463,7 @@ const ProductsScreen = () => {
 
             {/* Expand Indicator */}
             <View style={styles.expandIndicator}>
-              <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color="#64748b" />
+              <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={theme.textMuted} />
             </View>
           </LinearGradient>
         </View>
@@ -700,11 +702,11 @@ const ProductsScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       <LinearGradient
-        colors={['#2a4a6a', '#1a2332', '#0d1117']}
+        colors={theme.backgroundGradient}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -712,19 +714,19 @@ const ProductsScreen = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Productos</Text>
+        <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>Productos</Text>
         <TouchableOpacity style={styles.moreButton}>
-          <Ionicons name="ellipsis-vertical" size={24} color="#fff" />
+          <Ionicons name="ellipsis-vertical" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
       </View>
 
       {/* Error */}
       {error && (
-        <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={20} color="#ef4444" />
-          <Text style={styles.errorText}>{error}</Text>
+        <View style={[styles.errorContainer, { borderColor: `${theme.error}50` }]}>
+          <Ionicons name="alert-circle" size={20} color={theme.error} />
+          <Text style={[styles.errorText, { color: theme.error }]}>{error}</Text>
         </View>
       )}
 
@@ -732,27 +734,27 @@ const ProductsScreen = () => {
       <View style={styles.statsContainer}>
         <View style={[styles.card3D, styles.statsCard]}>
           <LinearGradient
-            colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-            style={styles.statsCardInner}
+            colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+            style={[styles.statsCardInner, { borderColor: theme.border }]}
           >
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Total</Text>
-              <Text style={styles.statValue}>{stats.total}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Total</Text>
+              <Text style={[styles.statValue, { color: theme.textPrimary }]}>{stats.total}</Text>
             </View>
-            <View style={styles.statDivider} />
+            <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Disponibles</Text>
-              <Text style={[styles.statValue, { color: '#34d399' }]}>{stats.disponibles}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Disponibles</Text>
+              <Text style={[styles.statValue, { color: theme.success }]}>{stats.disponibles}</Text>
             </View>
-            <View style={styles.statDivider} />
+            <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Sin Stock</Text>
-              <Text style={[styles.statValue, { color: '#ef4444' }]}>{stats.sinStock}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Sin Stock</Text>
+              <Text style={[styles.statValue, { color: theme.error }]}>{stats.sinStock}</Text>
             </View>
-            <View style={styles.statDivider} />
+            <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Destacados</Text>
-              <Text style={[styles.statValue, { color: '#fbbf24' }]}>{stats.destacados}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Destacados</Text>
+              <Text style={[styles.statValue, { color: theme.warning }]}>{stats.destacados}</Text>
             </View>
           </LinearGradient>
         </View>
@@ -760,24 +762,24 @@ const ProductsScreen = () => {
 
       {/* Valor del inventario */}
       <View style={styles.inventoryTotalContainer}>
-        <Text style={styles.inventoryTotalLabel}>Valor total del inventario:</Text>
-        <Text style={styles.inventoryTotalValue}>${stats.valorInventario.toLocaleString('es-MX')}</Text>
+        <Text style={[styles.inventoryTotalLabel, { color: theme.textSecondary }]}>Valor total del inventario:</Text>
+        <Text style={[styles.inventoryTotalValue, { color: theme.success }]}>${stats.valorInventario.toLocaleString('es-MX')}</Text>
       </View>
 
       {/* Search */}
       <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#64748b" />
+        <View style={[styles.searchBar, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+          <Ionicons name="search" size={20} color={theme.textMuted} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.textPrimary }]}
             placeholder="Buscar por nombre, marca, modelo..."
-            placeholderTextColor="#64748b"
+            placeholderTextColor={theme.textMuted}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={20} color="#64748b" />
+              <Ionicons name="close-circle" size={20} color={theme.textMuted} />
             </TouchableOpacity>
           )}
         </View>
@@ -796,17 +798,17 @@ const ProductsScreen = () => {
               <LinearGradient
                 colors={
                   selectedCategory === category.id
-                    ? ['rgba(99, 102, 241, 0.3)', 'rgba(79, 70, 229, 0.3)']
-                    : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                    ? [`${theme.primary}30`, `${theme.primary}30`]
+                    : [theme.cardBackground, theme.cardBackgroundAlt]
                 }
-                style={styles.filterChipGradient}
+                style={[styles.filterChipGradient, { borderColor: theme.border }]}
               >
                 <Ionicons
                   name={category.icon as any}
                   size={16}
-                  color={selectedCategory === category.id ? '#6366f1' : '#94a3b8'}
+                  color={selectedCategory === category.id ? theme.primary : theme.textSecondary}
                 />
-                <Text style={[styles.filterChipText, selectedCategory === category.id && styles.filterChipTextActive]}>
+                <Text style={[styles.filterChipText, { color: selectedCategory === category.id ? theme.primary : theme.textSecondary }]}>
                   {category.label}
                 </Text>
               </LinearGradient>
@@ -825,7 +827,7 @@ const ProductsScreen = () => {
               onPress={() => setSelectedFilter(filter.id)}
               activeOpacity={0.7}
             >
-              <Text style={[styles.statusFilterText, selectedFilter === filter.id && styles.statusFilterTextActive]}>
+              <Text style={[styles.statusFilterText, { color: selectedFilter === filter.id ? theme.textPrimary : theme.textMuted }]}>
                 {filter.label}
               </Text>
             </TouchableOpacity>
@@ -836,8 +838,8 @@ const ProductsScreen = () => {
       {/* List */}
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#6366f1" />
-          <Text style={styles.loadingText}>Cargando productos...</Text>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={[styles.loadingText, { color: theme.textSecondary }]}>Cargando productos...</Text>
         </View>
       ) : (
         <FlatList
@@ -848,9 +850,9 @@ const ProductsScreen = () => {
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Ionicons name="cube-outline" size={80} color="#334155" />
-              <Text style={styles.emptyText}>No hay productos</Text>
-              <Text style={styles.emptySubtext}>
+              <Ionicons name="cube-outline" size={80} color={theme.textMuted} />
+              <Text style={[styles.emptyText, { color: theme.textPrimary }]}>No hay productos</Text>
+              <Text style={[styles.emptySubtext, { color: theme.textMuted }]}>
                 {searchQuery ? 'Intenta con otra búsqueda' : 'Comienza agregando un nuevo producto'}
               </Text>
             </View>
@@ -859,38 +861,38 @@ const ProductsScreen = () => {
       )}
 
       {/* FAB */}
-      <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={openCreateModal}>
-        <LinearGradient colors={['#6366f1', '#4f46e5']} style={styles.fabGradient}>
+      <TouchableOpacity style={[styles.fab, { shadowColor: theme.primary }]} activeOpacity={0.8} onPress={openCreateModal}>
+        <LinearGradient colors={theme.primaryGradient} style={styles.fabGradient}>
           <Ionicons name="add" size={28} color="#fff" />
         </LinearGradient>
       </TouchableOpacity>
 
       {/* Bottom Nav */}
       <View style={styles.bottomNav}>
-        <LinearGradient colors={['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)']} style={styles.bottomNavGradient}>
+        <LinearGradient colors={theme.navBackground} style={[styles.bottomNavGradient, { borderTopColor: theme.border }]}>
           <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Dashboard')}>
-            <Ionicons name="home-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Home</Text>
+            <Ionicons name="home-outline" size={24} color={theme.navText} />
+            <Text style={[styles.navText, { color: theme.navText }]}>Home</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Sales')}>
-            <Ionicons name="cart-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Ventas</Text>
+            <Ionicons name="cart-outline" size={24} color={theme.navText} />
+            <Text style={[styles.navText, { color: theme.navText }]}>Ventas</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Services')}>
-            <Ionicons name="build-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Servicios</Text>
+            <Ionicons name="build-outline" size={24} color={theme.navText} />
+            <Text style={[styles.navText, { color: theme.navText }]}>Servicios</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="cube" size={24} color="#3b82f6" />
-            <Text style={[styles.navText, styles.navTextActive]}>Productos</Text>
+            <Ionicons name="cube" size={24} color={theme.navTextActive} />
+            <Text style={[styles.navText, { color: theme.navTextActive }]}>Productos</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Config')}>
-            <Ionicons name="settings-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Config</Text>
+            <Ionicons name="settings-outline" size={24} color={theme.navText} />
+            <Text style={[styles.navText, { color: theme.navText }]}>Config</Text>
           </TouchableOpacity>
         </LinearGradient>
       </View>

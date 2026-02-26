@@ -18,6 +18,7 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useSales } from '../hooks/useSales';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type EditSaleRouteProp = RouteProp<RootStackParamList, 'EditSale'>;
@@ -31,6 +32,7 @@ const EditSaleScreen = () => {
   const { updateSale, deleteSale } = useSales();
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const { theme, isDarkMode } = useTheme();
 
   // Form state - inicializado con datos de la venta
   const [cliente, setCliente] = useState(sale.cliente);
@@ -119,11 +121,11 @@ const EditSaleScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       <LinearGradient
-        colors={['#2a4a6a', '#1a2332', '#0d1117']}
+        colors={theme.backgroundGradient}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -134,10 +136,10 @@ const EditSaleScreen = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
 
-        <Text style={styles.headerTitle}>Editar Venta</Text>
+        <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>Editar Venta</Text>
 
         <TouchableOpacity
           style={styles.deleteButton}
@@ -145,9 +147,9 @@ const EditSaleScreen = () => {
           disabled={deleting}
         >
           {deleting ? (
-            <ActivityIndicator size="small" color="#ef4444" />
+            <ActivityIndicator size="small" color={theme.error} />
           ) : (
-            <Ionicons name="trash-outline" size={24} color="#ef4444" />
+            <Ionicons name="trash-outline" size={24} color={theme.error} />
           )}
         </TouchableOpacity>
       </View>

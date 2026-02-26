@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import { FirebaseError } from "firebase/app";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>("");
@@ -23,6 +24,7 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { login } = useAuth();
+  const { theme, isDarkMode } = useTheme();
 
   const handleLogin = async (): Promise<void> => {
     if (!email || !password) {
@@ -59,21 +61,21 @@ export default function LoginScreen() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
+        style={[styles.container, { backgroundColor: theme.background }]}
       >
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.content}>
-            <Text style={styles.title}>BICIROS</Text>
-            <Text style={styles.subtitle}>Taller y Tienda</Text>
+            <Text style={[styles.title, { color: theme.primary }]}>BICIROS</Text>
+            <Text style={[styles.subtitle, { color: theme.textSecondary }]}>Taller y Tienda</Text>
 
             <View style={styles.inputContainer}>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }]}
                 placeholder="Correo electrónico"
-                placeholderTextColor="#999"
+                placeholderTextColor={theme.textMuted}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -82,11 +84,11 @@ export default function LoginScreen() {
                 editable={!loading}
               />
 
-              <View style={styles.passwordContainer}>
+              <View style={[styles.passwordContainer, { borderColor: theme.border, backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }]}>
                 <TextInput
-                  style={styles.passwordInput}
+                  style={[styles.passwordInput, { color: theme.textPrimary }]}
                   placeholder="Contraseña"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={theme.textMuted}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
@@ -102,13 +104,13 @@ export default function LoginScreen() {
                   <Ionicons
                     name={showPassword ? "eye-off" : "eye"}
                     size={24}
-                    color="#666"
+                    color={theme.textMuted}
                   />
                 </TouchableOpacity>
               </View>
 
               <TouchableOpacity
-                style={[styles.button, loading && styles.buttonDisabled]}
+                style={[styles.button, { backgroundColor: theme.primary }, loading && styles.buttonDisabled]}
                 onPress={handleLogin}
                 disabled={loading}
               >
