@@ -20,6 +20,8 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useAuth } from '../contexts/AuthContext';
 import { useSettings } from '../hooks/useSettings';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
 const APP_VERSION = '1.0.0';
@@ -71,6 +73,7 @@ const ConfigScreen = () => {
   const { userData, user, logout } = useAuth();
   const { settings, updateSetting, updateSettings } = useSettings();
   const { isDarkMode, setDarkMode, theme } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const [showBusinessModal, setShowBusinessModal] = useState(false);
   const [businessForm, setBusinessForm] = useState({
@@ -119,9 +122,6 @@ const ConfigScreen = () => {
     setShowBusinessModal(true);
   };
 
-  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales' | 'Services' | 'Products' | 'Config') => {
-    navigation.navigate(screen);
-  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -134,7 +134,7 @@ const ConfigScreen = () => {
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -424,50 +424,7 @@ const ConfigScreen = () => {
         </View>
       </Modal>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <LinearGradient
-          colors={theme.navBackground}
-          style={[styles.bottomNavGradient, { borderTopColor: theme.border }]}
-        >
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Dashboard')}
-          >
-            <Ionicons name="home-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Sales')}
-          >
-            <Ionicons name="cart-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Ventas</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Services')}
-          >
-            <Ionicons name="build-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Servicios</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Products')}
-          >
-            <Ionicons name="cube-outline" size={24} color={theme.navText} />
-            <Text style={[styles.navText, { color: theme.navText }]}>Productos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="settings" size={24} color={theme.navTextActive} />
-            <Text style={[styles.navText, { color: theme.navTextActive }]}>Config</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+      <BottomNavBar active="Config" />
     </View>
   );
 };
@@ -484,7 +441,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 20,
   },
@@ -678,34 +634,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
-  },
-  bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  bottomNavGradient: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingBottom: 28,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  navItem: {
-    alignItems: 'center',
-    padding: 8,
-  },
-  navText: {
-    fontSize: 10,
-    color: '#64748b',
-    marginTop: 4,
-    fontWeight: '600',
-  },
-  navTextActive: {
-    color: '#3b82f6',
   },
 });
 

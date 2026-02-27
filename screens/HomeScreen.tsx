@@ -16,6 +16,9 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList  } from '../navigation/AppNavigator';
 import { useAuth } from '../contexts/AuthContext';
 import { useSales } from '../hooks/useSales';
+import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
 
@@ -33,6 +36,8 @@ const DashboardScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { userData, logout } = useAuth();
   const { sales } = useSales();
+  const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   // Calcular estadísticas reales de ventas
   const totalVentas = sales.length;
@@ -114,37 +119,32 @@ const DashboardScreen = () => {
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
-  // Función para navegar desde la barra inferior
-  const handleBottomNavPress = (screen: 'Dashboard' | 'Sales' | 'Services') => {
-    navigation.navigate(screen);
-  };
-
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+
       {/* Background Gradient */}
       <LinearGradient
-        colors={['#2a4a6a', '#1a2332', '#0d1117']}
+        colors={theme.backgroundGradient}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity style={styles.menuButton} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={28} color="#fff" />
+          <Ionicons name="log-out-outline" size={28} color={theme.textPrimary} />
         </TouchableOpacity>
 
-        <Text style={styles.logo}>BICIROS</Text>
+        <Text style={[styles.logo, { color: theme.primary }]}>BICIROS</Text>
 
         <View style={styles.profileButton}>
           <LinearGradient
             colors={['rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)']}
             style={styles.profileGradient}
           >
-            <Ionicons name="person" size={20} color="#fff" />
-            <Text style={styles.profileText}>{userName}</Text>
+            <Ionicons name="person" size={20} color={theme.textPrimary} />
+            <Text style={[styles.profileText, { color: theme.textPrimary }]}>{userName}</Text>
           </LinearGradient>
         </View>
       </View>
@@ -155,8 +155,8 @@ const DashboardScreen = () => {
       >
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Hola, {userName}</Text>
-          <Text style={styles.dateText}>{getCurrentDate()}</Text>
+          <Text style={[styles.welcomeText, { color: theme.textPrimary }]}>Hola, {userName}</Text>
+          <Text style={[styles.dateText, { color: theme.textSecondary }]}>{getCurrentDate()}</Text>
         </View>
 
         {/* Stats Grid - SIN onPress, solo visual */}
@@ -203,13 +203,13 @@ const DashboardScreen = () => {
         <View style={styles.additionalSection}>
           <View style={[styles.card3D, styles.activityCard]}>
             <LinearGradient
-              colors={['rgba(71, 85, 105, 0.5)', 'rgba(51, 65, 85, 0.4)']}
-              style={styles.activityCardInner}
+              colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+              style={[styles.activityCardInner, { borderColor: theme.border }]}
             >
               <View style={styles.activityHeader}>
-                <Text style={styles.activityTitle}>Actividad Reciente</Text>
+                <Text style={[styles.activityTitle, { color: theme.textPrimary }]}>Actividad Reciente</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Sales')}>
-                  <Ionicons name="chevron-forward" size={20} color="#fff" />
+                  <Ionicons name="chevron-forward" size={20} color={theme.textPrimary} />
                 </TouchableOpacity>
               </View>
 
@@ -219,14 +219,14 @@ const DashboardScreen = () => {
                     <Ionicons
                       name={sale.estado === 'completada' ? 'checkmark-circle' : 'time'}
                       size={24}
-                      color={sale.estado === 'completada' ? '#52c41a' : '#fbbf24'}
+                      color={sale.estado === 'completada' ? theme.success : theme.warning}
                     />
                   </View>
                   <View style={styles.activityDetails}>
-                    <Text style={styles.activityText}>
+                    <Text style={[styles.activityText, { color: theme.textPrimary }]}>
                       {sale.cliente} - ${sale.total.toLocaleString('es-MX')}
                     </Text>
-                    <Text style={styles.activityTime}>{sale.producto}</Text>
+                    <Text style={[styles.activityTime, { color: theme.textSecondary }]}>{sale.producto}</Text>
                   </View>
                 </View>
               ))}
@@ -234,11 +234,11 @@ const DashboardScreen = () => {
               {sales.length === 0 && (
                 <View style={styles.activityItem}>
                   <View style={styles.activityIcon}>
-                    <Ionicons name="information-circle" size={24} color="#64748b" />
+                    <Ionicons name="information-circle" size={24} color={theme.textMuted} />
                   </View>
                   <View style={styles.activityDetails}>
-                    <Text style={styles.activityText}>Sin actividad reciente</Text>
-                    <Text style={styles.activityTime}>Registra tu primera venta</Text>
+                    <Text style={[styles.activityText, { color: theme.textPrimary }]}>Sin actividad reciente</Text>
+                    <Text style={[styles.activityTime, { color: theme.textSecondary }]}>Registra tu primera venta</Text>
                   </View>
                 </View>
               )}
@@ -247,47 +247,7 @@ const DashboardScreen = () => {
         </View>
       </ScrollView>
 
-      {/* Bottom Navigation - CON NAVEGACIÓN */}
-      <View style={styles.bottomNav}>
-        <LinearGradient
-          colors={['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)']}
-          style={styles.bottomNavGradient}
-        >
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Dashboard')}
-          >
-            <Ionicons name="home" size={24} color="#3b82f6" />
-            <Text style={[styles.navText, styles.navTextActive]}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Sales')}
-          >
-            <Ionicons name="cart-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Ventas</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => handleBottomNavPress('Services')}
-          >
-            <Ionicons name="build-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Servicios</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Products')}>
-            <Ionicons name="cube-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Productos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Config')}>
-            <Ionicons name="settings-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Config</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+      <BottomNavBar active="Dashboard" />
     </View>
   );
 };
@@ -304,7 +264,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 20,
   },
@@ -467,34 +426,6 @@ const styles = StyleSheet.create({
   activityTime: {
     fontSize: 12,
     color: '#94a3b8',
-  },
-  bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  bottomNavGradient: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingBottom: 28,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  navItem: {
-    alignItems: 'center',
-    padding: 8,
-  },
-  navText: {
-    fontSize: 10,
-    color: '#64748b',
-    marginTop: 4,
-    fontWeight: '600',
-  },
-  navTextActive: {
-    color: '#3b82f6',
   },
 });
 

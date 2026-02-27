@@ -19,6 +19,9 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useServices, Service, NewService, generateServiceNumber } from '../hooks/useServices';
+import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
 
@@ -51,6 +54,8 @@ const ServicesScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [formData, setFormData] = useState<NewService>(initialFormData);
+  const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const { services, loading, error, addService, updateService, deleteService } = useServices();
 
@@ -273,8 +278,8 @@ const ServicesScreen = () => {
       >
         <View style={[styles.card3D, styles.serviceCard]}>
           <LinearGradient
-            colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-            style={styles.serviceCardInner}
+            colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+            style={[styles.serviceCardInner, { borderColor: theme.border }]}
           >
             {/* Header */}
             <View style={styles.serviceCardHeader}>
@@ -285,23 +290,23 @@ const ServicesScreen = () => {
                   </LinearGradient>
                 </View>
                 <View style={styles.serviceDetails}>
-                  <Text style={styles.serviceNumber}>{item.numero_servicio}</Text>
-                  <Text style={styles.serviceName}>{item.nombre_servicio}</Text>
-                  <Text style={styles.clientName}>{item.nombre_cliente_servicio}</Text>
+                  <Text style={[styles.serviceNumber, { color: theme.textMuted }]}>{item.numero_servicio}</Text>
+                  <Text style={[styles.serviceName, { color: theme.textPrimary }]}>{item.nombre_servicio}</Text>
+                  <Text style={[styles.clientName, { color: theme.textSecondary }]}>{item.nombre_cliente_servicio}</Text>
                 </View>
               </View>
 
               <View style={styles.priceContainer}>
-                <Text style={styles.priceLabel}>Precio</Text>
-                <Text style={styles.priceValue}>${item.precio_servicio.toLocaleString('es-MX')}</Text>
+                <Text style={[styles.priceLabel, { color: theme.textMuted }]}>Precio</Text>
+                <Text style={[styles.priceValue, { color: theme.success }]}>${item.precio_servicio.toLocaleString('es-MX')}</Text>
               </View>
             </View>
 
             {/* Bicicleta Info */}
             <View style={styles.bikeInfoRow}>
               <View style={styles.bikeInfoItem}>
-                <Ionicons name="bicycle-outline" size={16} color="#94a3b8" />
-                <Text style={styles.bikeInfoText}>
+                <Ionicons name="bicycle-outline" size={16} color={theme.textSecondary} />
+                <Text style={[styles.bikeInfoText, { color: theme.textSecondary }]}>
                   {item.marca_bicicleta_servicio} {item.modelo_bicicleta_servicio}
                 </Text>
               </View>
@@ -316,15 +321,15 @@ const ServicesScreen = () => {
             <View style={styles.serviceCardBody}>
               <View style={styles.infoRow}>
                 <View style={styles.infoItem}>
-                  <Ionicons name="construct-outline" size={16} color="#94a3b8" />
-                  <Text style={styles.infoLabel}>Tipo</Text>
-                  <Text style={styles.infoValue}>{getTipoLabel(item.tipo_servicio)}</Text>
+                  <Ionicons name="construct-outline" size={16} color={theme.textSecondary} />
+                  <Text style={[styles.infoLabel, { color: theme.textMuted }]}>Tipo</Text>
+                  <Text style={[styles.infoValue, { color: theme.textPrimary }]}>{getTipoLabel(item.tipo_servicio)}</Text>
                 </View>
 
                 <View style={styles.infoItem}>
-                  <Ionicons name="calendar-outline" size={16} color="#94a3b8" />
-                  <Text style={styles.infoLabel}>Programado</Text>
-                  <Text style={styles.infoValue}>{formatDate(item.fecha_programada_servicio)}</Text>
+                  <Ionicons name="calendar-outline" size={16} color={theme.textSecondary} />
+                  <Text style={[styles.infoLabel, { color: theme.textMuted }]}>Programado</Text>
+                  <Text style={[styles.infoValue, { color: theme.textPrimary }]}>{formatDate(item.fecha_programada_servicio)}</Text>
                 </View>
               </View>
             </View>
@@ -332,43 +337,43 @@ const ServicesScreen = () => {
             {/* Expanded Details */}
             {isExpanded && (
               <View style={styles.expandedSection}>
-                <View style={styles.divider} />
+                <View style={[styles.divider, { backgroundColor: theme.border }]} />
 
                 {/* Descripción */}
                 <View style={styles.detailGroup}>
-                  <Text style={styles.detailLabel}>Descripción:</Text>
-                  <Text style={styles.detailValue}>{item.descripcion_servicio || 'Sin descripción'}</Text>
+                  <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>Descripción:</Text>
+                  <Text style={[styles.detailValue, { color: theme.textPrimary }]}>{item.descripcion_servicio || 'Sin descripción'}</Text>
                 </View>
 
                 {/* Número de Serie */}
                 {item.numero_serie_servicio && (
                   <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>No. Serie:</Text>
-                    <Text style={styles.detailValue}>{item.numero_serie_servicio}</Text>
+                    <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>No. Serie:</Text>
+                    <Text style={[styles.detailValue, { color: theme.textPrimary }]}>{item.numero_serie_servicio}</Text>
                   </View>
                 )}
 
                 {/* Asignado a */}
                 {item.nombre_asignado_servicio && (
                   <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>Asignado a:</Text>
-                    <Text style={styles.detailValue}>{item.nombre_asignado_servicio}</Text>
+                    <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>Asignado a:</Text>
+                    <Text style={[styles.detailValue, { color: theme.textPrimary }]}>{item.nombre_asignado_servicio}</Text>
                   </View>
                 )}
 
                 {/* Notas */}
                 {item.notas_servicio && (
                   <View style={styles.detailGroup}>
-                    <Text style={styles.detailLabel}>Notas:</Text>
-                    <Text style={styles.detailValue}>{item.notas_servicio}</Text>
+                    <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>Notas:</Text>
+                    <Text style={[styles.detailValue, { color: theme.textPrimary }]}>{item.notas_servicio}</Text>
                   </View>
                 )}
 
                 {/* Fecha completado */}
                 {item.fecha_completado_servicio && (
                   <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>Completado:</Text>
-                    <Text style={[styles.detailValue, { color: '#34d399' }]}>
+                    <Text style={[styles.detailLabel, { color: theme.textSecondary }]}>Completado:</Text>
+                    <Text style={[styles.detailValue, { color: theme.success }]}>
                       {formatDate(item.fecha_completado_servicio)}
                     </Text>
                   </View>
@@ -431,7 +436,7 @@ const ServicesScreen = () => {
 
             {/* Expand Indicator */}
             <View style={styles.expandIndicator}>
-              <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color="#64748b" />
+              <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={theme.textMuted} />
             </View>
           </LinearGradient>
         </View>
@@ -625,31 +630,31 @@ const ServicesScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       <LinearGradient
-        colors={['#2a4a6a', '#1a2332', '#0d1117']}
+        colors={theme.backgroundGradient}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Servicios</Text>
+        <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>Servicios</Text>
         <TouchableOpacity style={styles.moreButton}>
-          <Ionicons name="ellipsis-vertical" size={24} color="#fff" />
+          <Ionicons name="ellipsis-vertical" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
       </View>
 
       {/* Error */}
       {error && (
-        <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={20} color="#ef4444" />
-          <Text style={styles.errorText}>{error}</Text>
+        <View style={[styles.errorContainer, { borderColor: `${theme.error}50` }]}>
+          <Ionicons name="alert-circle" size={20} color={theme.error} />
+          <Text style={[styles.errorText, { color: theme.error }]}>{error}</Text>
         </View>
       )}
 
@@ -657,27 +662,27 @@ const ServicesScreen = () => {
       <View style={styles.statsContainer}>
         <View style={[styles.card3D, styles.statsCard]}>
           <LinearGradient
-            colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-            style={styles.statsCardInner}
+            colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+            style={[styles.statsCardInner, { borderColor: theme.border }]}
           >
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Total</Text>
-              <Text style={styles.statValue}>{stats.total}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Total</Text>
+              <Text style={[styles.statValue, { color: theme.textPrimary }]}>{stats.total}</Text>
             </View>
-            <View style={styles.statDivider} />
+            <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Pendientes</Text>
-              <Text style={[styles.statValue, { color: '#fbbf24' }]}>{stats.pendientes}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Pendientes</Text>
+              <Text style={[styles.statValue, { color: theme.warning }]}>{stats.pendientes}</Text>
             </View>
-            <View style={styles.statDivider} />
+            <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>En Progreso</Text>
-              <Text style={[styles.statValue, { color: '#3b82f6' }]}>{stats.enProgreso}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>En Progreso</Text>
+              <Text style={[styles.statValue, { color: theme.info }]}>{stats.enProgreso}</Text>
             </View>
-            <View style={styles.statDivider} />
+            <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
             <View style={styles.statItem}>
-              <Text style={styles.statLabel}>Completados</Text>
-              <Text style={[styles.statValue, { color: '#34d399' }]}>{stats.completados}</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Completados</Text>
+              <Text style={[styles.statValue, { color: theme.success }]}>{stats.completados}</Text>
             </View>
           </LinearGradient>
         </View>
@@ -685,18 +690,18 @@ const ServicesScreen = () => {
 
       {/* Search */}
       <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#64748b" />
+        <View style={[styles.searchBar, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+          <Ionicons name="search" size={20} color={theme.textMuted} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.textPrimary }]}
             placeholder="Buscar por cliente, servicio, bici..."
-            placeholderTextColor="#64748b"
+            placeholderTextColor={theme.textMuted}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={20} color="#64748b" />
+              <Ionicons name="close-circle" size={20} color={theme.textMuted} />
             </TouchableOpacity>
           )}
         </View>
@@ -715,17 +720,17 @@ const ServicesScreen = () => {
               <LinearGradient
                 colors={
                   selectedFilter === filter.id
-                    ? ['rgba(99, 102, 241, 0.3)', 'rgba(79, 70, 229, 0.3)']
-                    : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                    ? [`${theme.primary}30`, `${theme.primary}30`]
+                    : [theme.cardBackground, theme.cardBackgroundAlt]
                 }
-                style={styles.filterChipGradient}
+                style={[styles.filterChipGradient, { borderColor: theme.border }]}
               >
                 <Ionicons
                   name={filter.icon as any}
                   size={16}
-                  color={selectedFilter === filter.id ? '#6366f1' : '#94a3b8'}
+                  color={selectedFilter === filter.id ? theme.primary : theme.textSecondary}
                 />
-                <Text style={[styles.filterChipText, selectedFilter === filter.id && styles.filterChipTextActive]}>
+                <Text style={[styles.filterChipText, { color: selectedFilter === filter.id ? theme.primary : theme.textSecondary }]}>
                   {filter.label}
                 </Text>
               </LinearGradient>
@@ -737,8 +742,8 @@ const ServicesScreen = () => {
       {/* List */}
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#6366f1" />
-          <Text style={styles.loadingText}>Cargando servicios...</Text>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={[styles.loadingText, { color: theme.textSecondary }]}>Cargando servicios...</Text>
         </View>
       ) : (
         <FlatList
@@ -749,9 +754,9 @@ const ServicesScreen = () => {
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Ionicons name="build-outline" size={80} color="#334155" />
-              <Text style={styles.emptyText}>No hay servicios</Text>
-              <Text style={styles.emptySubtext}>
+              <Ionicons name="build-outline" size={80} color={theme.textMuted} />
+              <Text style={[styles.emptyText, { color: theme.textPrimary }]}>No hay servicios</Text>
+              <Text style={[styles.emptySubtext, { color: theme.textMuted }]}>
                 {searchQuery ? 'Intenta con otra búsqueda' : 'Comienza agregando un nuevo servicio'}
               </Text>
             </View>
@@ -760,41 +765,13 @@ const ServicesScreen = () => {
       )}
 
       {/* FAB */}
-      <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={openCreateModal}>
-        <LinearGradient colors={['#6366f1', '#4f46e5']} style={styles.fabGradient}>
+      <TouchableOpacity style={[styles.fab, { shadowColor: theme.primary }]} activeOpacity={0.8} onPress={openCreateModal}>
+        <LinearGradient colors={theme.primaryGradient} style={styles.fabGradient}>
           <Ionicons name="add" size={28} color="#fff" />
         </LinearGradient>
       </TouchableOpacity>
 
-      {/* Bottom Nav */}
-      <View style={styles.bottomNav}>
-        <LinearGradient colors={['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)']} style={styles.bottomNavGradient}>
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Dashboard')}>
-            <Ionicons name="home-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Sales')}>
-            <Ionicons name="cart-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Ventas</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="build" size={24} color="#3b82f6" />
-            <Text style={[styles.navText, styles.navTextActive]}>Servicios</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Products')}>
-            <Ionicons name="cube-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Productos</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Config')}>
-            <Ionicons name="settings-outline" size={24} color="#64748b" />
-            <Text style={styles.navText}>Config</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+      <BottomNavBar active="Services" />
 
       {renderModal()}
     </View>
@@ -807,7 +784,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 16,
   },
@@ -949,19 +925,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   fabGradient: { width: 56, height: 56, justifyContent: 'center', alignItems: 'center' },
-  bottomNav: { position: 'absolute', bottom: 0, left: 0, right: 0 },
-  bottomNavGradient: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingBottom: 28,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  navItem: { alignItems: 'center', padding: 8 },
-  navText: { fontSize: 10, color: '#64748b', marginTop: 4, fontWeight: '600' },
-  navTextActive: { color: '#3b82f6' },
   // Modal
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.7)', justifyContent: 'flex-end' },
   modalContent: { borderTopLeftRadius: 24, borderTopRightRadius: 24, overflow: 'hidden', maxHeight: '90%' },

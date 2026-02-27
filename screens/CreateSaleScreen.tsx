@@ -18,6 +18,8 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useSales, NewSale } from '../hooks/useSales';
+import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type EstadoType = 'pendiente' | 'completada' | 'cancelada';
@@ -27,6 +29,8 @@ const CreateSaleScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { addSale } = useSales();
   const [loading, setLoading] = useState(false);
+  const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   // Form state
   const [cliente, setCliente] = useState('');
@@ -90,25 +94,25 @@ const CreateSaleScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       <LinearGradient
-        colors={['#2a4a6a', '#1a2332', '#0d1117']}
+        colors={theme.backgroundGradient}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
 
-        <Text style={styles.headerTitle}>Nueva Venta</Text>
+        <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>Nueva Venta</Text>
 
         <View style={styles.placeholder} />
       </View>
@@ -125,18 +129,18 @@ const CreateSaleScreen = () => {
           {/* Form Card */}
           <View style={styles.card3D}>
             <LinearGradient
-              colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-              style={styles.formCard}
+              colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+              style={[styles.formCard, { borderColor: theme.border }]}
             >
               {/* Cliente */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>
-                  <Ionicons name="person-outline" size={16} color="#94a3b8" /> Cliente
+                <Text style={[styles.label, { color: theme.textSecondary }]}>
+                  <Ionicons name="person-outline" size={16} color={theme.textSecondary} /> Cliente
                 </Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
                   placeholder="Nombre del cliente"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={cliente}
                   onChangeText={setCliente}
                 />
@@ -144,13 +148,13 @@ const CreateSaleScreen = () => {
 
               {/* Producto */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>
-                  <Ionicons name="cube-outline" size={16} color="#94a3b8" /> Producto
+                <Text style={[styles.label, { color: theme.textSecondary }]}>
+                  <Ionicons name="cube-outline" size={16} color={theme.textSecondary} /> Producto
                 </Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
                   placeholder="Nombre del producto"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={producto}
                   onChangeText={setProducto}
                 />
@@ -159,13 +163,13 @@ const CreateSaleScreen = () => {
               {/* Cantidad y Total */}
               <View style={styles.row}>
                 <View style={[styles.inputGroup, styles.halfWidth]}>
-                  <Text style={styles.label}>
-                    <Ionicons name="layers-outline" size={16} color="#94a3b8" /> Cantidad
+                  <Text style={[styles.label, { color: theme.textSecondary }]}>
+                    <Ionicons name="layers-outline" size={16} color={theme.textSecondary} /> Cantidad
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
                     placeholder="0"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={cantidad}
                     onChangeText={setCantidad}
                     keyboardType="numeric"
@@ -173,13 +177,13 @@ const CreateSaleScreen = () => {
                 </View>
 
                 <View style={[styles.inputGroup, styles.halfWidth]}>
-                  <Text style={styles.label}>
-                    <Ionicons name="cash-outline" size={16} color="#94a3b8" /> Total ($)
+                  <Text style={[styles.label, { color: theme.textSecondary }]}>
+                    <Ionicons name="cash-outline" size={16} color={theme.textSecondary} /> Total ($)
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
                     placeholder="0.00"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={total}
                     onChangeText={setTotal}
                     keyboardType="decimal-pad"
@@ -189,8 +193,8 @@ const CreateSaleScreen = () => {
 
               {/* Método de Pago */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>
-                  <Ionicons name="card-outline" size={16} color="#94a3b8" /> Método de Pago
+                <Text style={[styles.label, { color: theme.textSecondary }]}>
+                  <Ionicons name="card-outline" size={16} color={theme.textSecondary} /> Método de Pago
                 </Text>
                 <View style={styles.optionsRow}>
                   {metodosPago.map((metodo) => (
@@ -226,8 +230,8 @@ const CreateSaleScreen = () => {
 
               {/* Estado */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>
-                  <Ionicons name="flag-outline" size={16} color="#94a3b8" /> Estado
+                <Text style={[styles.label, { color: theme.textSecondary }]}>
+                  <Ionicons name="flag-outline" size={16} color={theme.textSecondary} /> Estado
                 </Text>
                 <View style={styles.optionsRow}>
                   {estados.map((est) => (
@@ -299,7 +303,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 16,
   },
