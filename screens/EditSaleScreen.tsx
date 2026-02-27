@@ -19,6 +19,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useSales } from '../hooks/useSales';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type EditSaleRouteProp = RouteProp<RootStackParamList, 'EditSale'>;
@@ -33,6 +34,7 @@ const EditSaleScreen = () => {
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   // Form state - inicializado con datos de la venta
   const [cliente, setCliente] = useState(sale.cliente);
@@ -131,7 +133,7 @@ const EditSaleScreen = () => {
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -352,7 +354,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 16,
   },

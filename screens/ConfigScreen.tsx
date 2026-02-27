@@ -20,6 +20,7 @@ import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useAuth } from '../contexts/AuthContext';
 import { useSettings } from '../hooks/useSettings';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
@@ -72,6 +73,7 @@ const ConfigScreen = () => {
   const { userData, user, logout } = useAuth();
   const { settings, updateSetting, updateSettings } = useSettings();
   const { isDarkMode, setDarkMode, theme } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const [showBusinessModal, setShowBusinessModal] = useState(false);
   const [businessForm, setBusinessForm] = useState({
@@ -132,7 +134,7 @@ const ConfigScreen = () => {
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -439,7 +441,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 20,
   },

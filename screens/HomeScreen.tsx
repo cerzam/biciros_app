@@ -17,6 +17,7 @@ import type { RootStackParamList  } from '../navigation/AppNavigator';
 import { useAuth } from '../contexts/AuthContext';
 import { useSales } from '../hooks/useSales';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
@@ -36,6 +37,7 @@ const DashboardScreen = () => {
   const { userData, logout } = useAuth();
   const { sales } = useSales();
   const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   // Calcular estadísticas reales de ventas
   const totalVentas = sales.length;
@@ -129,7 +131,7 @@ const DashboardScreen = () => {
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity style={styles.menuButton} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={28} color={theme.textPrimary} />
         </TouchableOpacity>
@@ -262,7 +264,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 20,
   },

@@ -19,6 +19,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useSales, Sale } from '../hooks/useSales';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomNavBar from '../components/BottomNavBar';
 
 const { width } = Dimensions.get('window');
@@ -32,6 +33,7 @@ const SalesScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<FilterType>('todas');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   // Obtener ventas desde Firebase
   const { sales, loading, error, deleteSale, updateSale } = useSales();
@@ -281,7 +283,7 @@ const SalesScreen = () => {
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -450,7 +452,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 16,
   },

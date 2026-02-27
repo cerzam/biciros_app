@@ -19,6 +19,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 import { useSales, NewSale } from '../hooks/useSales';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type EstadoType = 'pendiente' | 'completada' | 'cancelada';
@@ -29,6 +30,7 @@ const CreateSaleScreen = () => {
   const { addSale } = useSales();
   const [loading, setLoading] = useState(false);
   const { theme, isDarkMode } = useTheme();
+  const insets = useSafeAreaInsets();
 
   // Form state
   const [cliente, setCliente] = useState('');
@@ -102,7 +104,7 @@ const CreateSaleScreen = () => {
       />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -301,7 +303,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
     paddingHorizontal: 24,
     paddingBottom: 16,
   },
