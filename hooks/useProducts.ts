@@ -12,7 +12,7 @@ import {
   QuerySnapshot,
   DocumentData
 } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db, auth } from '../config/firebaseConfig';
 
 // Interfaz para especificaciones del producto (objeto anidado en Firebase)
 export interface ProductSpecifications {
@@ -169,6 +169,7 @@ export const useProducts = (): UseProductsReturn => {
       const newProduct = {
         ...product,
         id_producto: '',
+        userId: auth.currentUser?.uid || null,
         disponible_producto: disponible,
         creado_producto: Timestamp.now(),
         actualizado_producto: Timestamp.now(),

@@ -12,7 +12,7 @@ import {
   QuerySnapshot,
   DocumentData
 } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db, auth } from '../config/firebaseConfig';
 
 export interface Service {
   id: string;
@@ -172,6 +172,7 @@ export const useServices = (): UseServicesReturn => {
       const newService = {
         ...service,
         id_servicio: '',
+        userId: auth.currentUser?.uid || null,
         fecha_completado_servicio: null,
         creado_servicio: Timestamp.now(),
         actualizado_servicio: Timestamp.now(),

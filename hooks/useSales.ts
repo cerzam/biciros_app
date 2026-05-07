@@ -12,7 +12,7 @@ import {
   QuerySnapshot,
   DocumentData
 } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db, auth } from '../config/firebaseConfig';
 
 export interface Sale {
   id: string;
@@ -136,7 +136,7 @@ export const useSales = (userId?: string): UseSalesReturn => {
 
       const newSale = {
         ...sale,
-        userId: userId || null,
+        userId: auth.currentUser?.uid || null,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
       };
