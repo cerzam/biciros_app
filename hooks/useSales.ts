@@ -23,7 +23,8 @@ export interface Sale {
   fecha: string;
   estado: 'pendiente' | 'completada' | 'cancelada';
   metodoPago: string;
-  userId?: string; // ID del usuario que creó la venta
+  productoId?: string;
+  userId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -36,6 +37,7 @@ export interface NewSale {
   fecha: string;
   estado: 'pendiente' | 'completada' | 'cancelada';
   metodoPago: string;
+  productoId?: string;
 }
 
 interface UseSalesReturn {
@@ -96,6 +98,7 @@ export const useSales = (userId?: string): UseSalesReturn => {
               fecha,
               estado: data.estado || 'pendiente',
               metodoPago: data.metodoPago || '',
+              productoId: data.productoId || undefined,
               userId: data.userId,
               createdAt,
               updatedAt,
