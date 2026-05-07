@@ -1,9 +1,16 @@
 export interface UserData {
   uid: string;
-  nombre: string;
-  email: string;
-  rol: 'admin' | 'trabajador';
-  createdAt: Date;
+  // formato nuevo (colección 'users')
+  nombre?: string;
+  email?: string;
+  rol?: string;
+  createdAt?: Date;
+  // formato original (colección 'usuarios')
+  nombre_usuario?: string;
+  email_usuario?: string;
+  rol_usuario?: string;
+  activo_usuario?: boolean;
+  telefono_usuario?: string;
 }
 
 export interface AuthContextType {

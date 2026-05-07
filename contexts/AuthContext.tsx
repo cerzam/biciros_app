@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   User
 } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { AuthContextType, UserData } from '../types';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,10 +32,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
-          // Obtener datos adicionales del usuario desde Firestore
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
-          if (userDoc.exists()) {
-            setUserData(userDoc.data() as UserData);
+          // Buscar primero en 'usuarios' (estructura original)
+          const usuariosRef = doc(db, 'usuarios', user.uid);
+          const usuariosDoc = await getDoc(usuariosRef);
+
+          if (usuariosDoc.exists()) {
+            setUserData({ uid: user.uid, ...usuariosDoc.data() } as UserData);
+          } else {
+            // Buscar en 'users' (estructura nueva)
+            const usersRef = doc(db, 'users', user.uid);
+            const usersDoc = await getDoc(usersRef);
+
+            if (usersDoc.exists()) {
+              setUserData(usersDoc.data() as UserData);
+            } else {
+              // Crear documento en 'users' si no existe en ninguna colección
+              const newUserData: UserData = {
+                uid: user.uid,
+                nombre: user.displayName || user.email?.split('@')[0] || 'Usuario',
+                email: user.email || '',
+                rol: 'admin',
+                createdAt: new Date(),
+              };
+              await setDoc(usersRef, newUserData);
+              setUserData(newUserData);
+            }
           }
           setUser(user);
         } catch (error) {
