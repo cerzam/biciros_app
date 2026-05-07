@@ -478,7 +478,7 @@ const ProductsScreen = () => {
     <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <LinearGradient colors={[theme.cardBackground, theme.cardBackgroundAlt]} style={styles.modalGradient}>
+          <LinearGradient colors={[theme.modalBackground, theme.modalBackground]} style={styles.modalGradient}>
             {/* Modal Header */}
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</Text>
@@ -492,9 +492,9 @@ const ProductsScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Nombre del Producto *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Ej: Bicicleta de Ruta Pro"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.nombre_producto}
                   onChangeText={(text) => setFormData({ ...formData, nombre_producto: text })}
                 />
@@ -504,9 +504,9 @@ const ProductsScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Descripción</Text>
                 <TextInput
-                  style={[styles.input, styles.textArea]}
+                  style={[styles.input, styles.textArea, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Descripción del producto..."
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.descripcion_producto}
                   onChangeText={(text) => setFormData({ ...formData, descripcion_producto: text })}
                   multiline
@@ -521,7 +521,7 @@ const ProductsScreen = () => {
                   {categories.filter(c => c.id !== 'todos').map((cat) => (
                     <TouchableOpacity
                       key={cat.id}
-                      style={[styles.categoryButton, formData.categoria_producto === cat.id && styles.categoryButtonActive]}
+                      style={[styles.categoryButton, { backgroundColor: theme.cardBackgroundAlt, borderColor: theme.border }, formData.categoria_producto === cat.id && styles.categoryButtonActive]}
                       onPress={() => setFormData({ ...formData, categoria_producto: cat.id })}
                     >
                       <Ionicons
@@ -544,9 +544,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
                   <Text style={styles.inputLabel}>Marca</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: PEUGEOT"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.marca_producto}
                     onChangeText={(text) => setFormData({ ...formData, marca_producto: text })}
                   />
@@ -554,9 +554,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
                   <Text style={styles.inputLabel}>Modelo</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: LR01"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.modelo_producto}
                     onChangeText={(text) => setFormData({ ...formData, modelo_producto: text })}
                   />
@@ -570,9 +570,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
                   <Text style={styles.inputLabel}>Color</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: Negro"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.especificaciones_producto.color || ''}
                     onChangeText={(text) => updateSpecification('color', text)}
                   />
@@ -580,9 +580,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
                   <Text style={styles.inputLabel}>Cuadro</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: Aluminio"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.especificaciones_producto.cuadro || ''}
                     onChangeText={(text) => updateSpecification('cuadro', text)}
                   />
@@ -593,9 +593,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
                   <Text style={styles.inputLabel}>Tamaño Rueda</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: 700c"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.especificaciones_producto.tamañoRueda || ''}
                     onChangeText={(text) => updateSpecification('tamañoRueda', text)}
                   />
@@ -603,9 +603,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
                   <Text style={styles.inputLabel}>Velocidades</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: 21"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.especificaciones_producto.velocidades?.toString() || ''}
                     onChangeText={(text) => updateSpecification('velocidades', parseInt(text) || 0)}
                     keyboardType="numeric"
@@ -616,9 +616,9 @@ const ProductsScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Peso</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Ej: 8.5kg"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.especificaciones_producto.peso || ''}
                   onChangeText={(text) => updateSpecification('peso', text)}
                 />
@@ -631,9 +631,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
                   <Text style={styles.inputLabel}>Precio *</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.precio_producto > 0 ? formData.precio_producto.toString() : ''}
                     onChangeText={(text) => setFormData({ ...formData, precio_producto: parseFloat(text) || 0 })}
                     keyboardType="numeric"
@@ -642,9 +642,9 @@ const ProductsScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
                   <Text style={styles.inputLabel}>Stock</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.stock_producto > 0 ? formData.stock_producto.toString() : ''}
                     onChangeText={(text) => setFormData({ ...formData, stock_producto: parseInt(text) || 0 })}
                     keyboardType="numeric"
@@ -657,7 +657,7 @@ const ProductsScreen = () => {
 
               <View style={styles.switchRow}>
                 <TouchableOpacity
-                  style={[styles.switchButton, formData.disponible_producto && styles.switchButtonActive]}
+                  style={[styles.switchButton, { backgroundColor: theme.cardBackgroundAlt, borderColor: theme.border }, formData.disponible_producto && styles.switchButtonActive]}
                   onPress={() => setFormData({ ...formData, disponible_producto: !formData.disponible_producto })}
                 >
                   <Ionicons
@@ -671,7 +671,7 @@ const ProductsScreen = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.switchButton, formData.destacado_producto && styles.switchButtonActive]}
+                  style={[styles.switchButton, { backgroundColor: theme.cardBackgroundAlt, borderColor: theme.border }, formData.destacado_producto && styles.switchButtonActive]}
                   onPress={() => setFormData({ ...formData, destacado_producto: !formData.destacado_producto })}
                 >
                   <Ionicons

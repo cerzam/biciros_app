@@ -180,8 +180,8 @@ const EditSaleScreen = () => {
           {/* Form Card */}
           <View style={styles.card3D}>
             <LinearGradient
-              colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-              style={styles.formCard}
+              colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+              style={[styles.formCard, { borderColor: theme.border }]}
             >
               {/* Cliente */}
               <View style={styles.inputGroup}>
@@ -189,9 +189,9 @@ const EditSaleScreen = () => {
                   <Ionicons name="person-outline" size={16} color="#94a3b8" /> Cliente
                 </Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Nombre del cliente"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={cliente}
                   onChangeText={setCliente}
                 />
@@ -203,9 +203,9 @@ const EditSaleScreen = () => {
                   <Ionicons name="cube-outline" size={16} color="#94a3b8" /> Producto
                 </Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Nombre del producto"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={producto}
                   onChangeText={setProducto}
                 />
@@ -218,9 +218,9 @@ const EditSaleScreen = () => {
                     <Ionicons name="layers-outline" size={16} color="#94a3b8" /> Cantidad
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={cantidad}
                     onChangeText={setCantidad}
                     keyboardType="numeric"
@@ -232,9 +232,9 @@ const EditSaleScreen = () => {
                     <Ionicons name="cash-outline" size={16} color="#94a3b8" /> Total ($)
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0.00"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={total}
                     onChangeText={setTotal}
                     keyboardType="decimal-pad"
@@ -258,7 +258,7 @@ const EditSaleScreen = () => {
                         colors={
                           metodoPago === metodo
                             ? ['rgba(99, 102, 241, 0.4)', 'rgba(79, 70, 229, 0.4)']
-                            : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                            : [theme.cardBackgroundAlt, theme.cardBackground]
                         }
                         style={[
                           styles.optionGradient,
@@ -295,7 +295,7 @@ const EditSaleScreen = () => {
                         colors={
                           estado === est.id
                             ? [`${est.color}40`, `${est.color}30`]
-                            : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                            : [theme.cardBackgroundAlt, theme.cardBackground]
                         }
                         style={[
                           styles.optionGradient,
