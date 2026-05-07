@@ -180,8 +180,8 @@ const EditSaleScreen = () => {
           {/* Form Card */}
           <View style={styles.card3D}>
             <LinearGradient
-              colors={['rgba(51, 65, 85, 0.6)', 'rgba(30, 41, 59, 0.5)']}
-              style={styles.formCard}
+              colors={[theme.cardBackground, theme.cardBackgroundAlt]}
+              style={[styles.formCard, { borderColor: theme.border }]}
             >
               {/* Cliente */}
               <View style={styles.inputGroup}>
@@ -258,7 +258,7 @@ const EditSaleScreen = () => {
                         colors={
                           metodoPago === metodo
                             ? ['rgba(99, 102, 241, 0.4)', 'rgba(79, 70, 229, 0.4)']
-                            : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                            : [theme.cardBackgroundAlt, theme.cardBackground]
                         }
                         style={[
                           styles.optionGradient,
@@ -295,7 +295,7 @@ const EditSaleScreen = () => {
                         colors={
                           estado === est.id
                             ? [`${est.color}40`, `${est.color}30`]
-                            : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                            : [theme.cardBackgroundAlt, theme.cardBackground]
                         }
                         style={[
                           styles.optionGradient,

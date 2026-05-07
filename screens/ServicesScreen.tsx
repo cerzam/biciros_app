@@ -448,12 +448,12 @@ const ServicesScreen = () => {
     <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <LinearGradient colors={['#1e293b', '#0f172a']} style={styles.modalGradient}>
+          <LinearGradient colors={[theme.cardBackground, theme.cardBackgroundAlt]} style={styles.modalGradient}>
             {/* Modal Header */}
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{editingService ? 'Editar Servicio' : 'Nuevo Servicio'}</Text>
+              <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>{editingService ? 'Editar Servicio' : 'Nuevo Servicio'}</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Ionicons name="close" size={24} color="#fff" />
+                <Ionicons name="close" size={24} color={theme.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -462,7 +462,7 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Número de Servicio</Text>
                 <TextInput
-                  style={[styles.input, styles.inputDisabled]}
+                  style={[styles.input, styles.inputDisabled, { borderColor: theme.border, color: theme.textMuted }]}
                   value={formData.numero_servicio}
                   editable={false}
                 />
@@ -472,9 +472,9 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Nombre del Servicio *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Ej: Mantenimiento General"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.nombre_servicio}
                   onChangeText={(text) => setFormData({ ...formData, nombre_servicio: text })}
                 />
@@ -484,9 +484,9 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Descripción</Text>
                 <TextInput
-                  style={[styles.input, styles.textArea]}
+                  style={[styles.input, styles.textArea, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Descripción del servicio..."
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.descripcion_servicio}
                   onChangeText={(text) => setFormData({ ...formData, descripcion_servicio: text })}
                   multiline
@@ -501,7 +501,7 @@ const ServicesScreen = () => {
                   {(['mantenimiento', 'reparacion', 'personalizacion', 'otro'] as const).map((tipo) => (
                     <TouchableOpacity
                       key={tipo}
-                      style={[styles.categoryButton, formData.tipo_servicio === tipo && styles.categoryButtonActive]}
+                      style={[styles.categoryButton, { backgroundColor: theme.cardBackgroundAlt, borderColor: theme.border }, formData.tipo_servicio === tipo && styles.categoryButtonActive]}
                       onPress={() => setFormData({ ...formData, tipo_servicio: tipo })}
                     >
                       <Text style={[styles.categoryButtonText, formData.tipo_servicio === tipo && styles.categoryButtonTextActive]}>
@@ -516,9 +516,9 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Precio *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="0"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.precio_servicio > 0 ? formData.precio_servicio.toString() : ''}
                   onChangeText={(text) => setFormData({ ...formData, precio_servicio: parseFloat(text) || 0 })}
                   keyboardType="numeric"
@@ -531,9 +531,9 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Nombre del Cliente *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Nombre completo"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.nombre_cliente_servicio}
                   onChangeText={(text) => setFormData({ ...formData, nombre_cliente_servicio: text })}
                 />
@@ -546,9 +546,9 @@ const ServicesScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
                   <Text style={styles.inputLabel}>Marca</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: TREK"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.marca_bicicleta_servicio}
                     onChangeText={(text) => setFormData({ ...formData, marca_bicicleta_servicio: text })}
                   />
@@ -556,9 +556,9 @@ const ServicesScreen = () => {
                 <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
                   <Text style={styles.inputLabel}>Modelo</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Ej: Marlin 5"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={formData.modelo_bicicleta_servicio}
                     onChangeText={(text) => setFormData({ ...formData, modelo_bicicleta_servicio: text })}
                   />
@@ -568,9 +568,9 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Número de Serie</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Número de serie (opcional)"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.numero_serie_servicio}
                   onChangeText={(text) => setFormData({ ...formData, numero_serie_servicio: text })}
                 />
@@ -584,7 +584,7 @@ const ServicesScreen = () => {
                     {(['pendiente', 'en_progreso', 'completado', 'cancelado'] as const).map((estado) => (
                       <TouchableOpacity
                         key={estado}
-                        style={[styles.categoryButton, formData.estado_servicio === estado && styles.categoryButtonActive]}
+                        style={[styles.categoryButton, { backgroundColor: theme.cardBackgroundAlt, borderColor: theme.border }, formData.estado_servicio === estado && styles.categoryButtonActive]}
                         onPress={() => setFormData({ ...formData, estado_servicio: estado })}
                       >
                         <Text style={[styles.categoryButtonText, formData.estado_servicio === estado && styles.categoryButtonTextActive]}>
@@ -600,9 +600,9 @@ const ServicesScreen = () => {
               <View style={styles.inputGroup}>
                 <Text style={styles.inputLabel}>Notas</Text>
                 <TextInput
-                  style={[styles.input, styles.textArea]}
+                  style={[styles.input, styles.textArea, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Notas adicionales..."
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={formData.notas_servicio}
                   onChangeText={(text) => setFormData({ ...formData, notas_servicio: text })}
                   multiline
