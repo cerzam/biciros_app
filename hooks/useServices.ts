@@ -171,7 +171,7 @@ export const useServices = (): UseServicesReturn => {
 
       const newService = {
         ...service,
-        id_servicio: '', // Se actualizará después de crear
+        id_servicio: '',
         fecha_completado_servicio: null,
         creado_servicio: Timestamp.now(),
         actualizado_servicio: Timestamp.now(),

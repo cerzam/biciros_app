@@ -172,7 +172,7 @@ const CreateSaleScreen = () => {
       onRequestClose={() => setModalProductosVisible(false)}
     >
       <View style={styles.modalOverlay}>
-        <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
+        <View style={[styles.modalContent, { backgroundColor: theme.modalBackground }]}>
           <View style={styles.modalHeader}>
             <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>Seleccionar Producto</Text>
             <TouchableOpacity onPress={() => { setModalProductosVisible(false); setBusqueda(''); }}>

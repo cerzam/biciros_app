@@ -478,7 +478,7 @@ const ProductsScreen = () => {
     <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <LinearGradient colors={[theme.cardBackground, theme.cardBackgroundAlt]} style={styles.modalGradient}>
+          <LinearGradient colors={[theme.modalBackground, theme.modalBackground]} style={styles.modalGradient}>
             {/* Modal Header */}
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</Text>
