@@ -302,7 +302,7 @@ const CreateSaleScreen = () => {
                   <Ionicons name="person-outline" size={16} color={theme.textSecondary} /> Cliente
                 </Text>
                 <TextInput
-                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Nombre del cliente"
                   placeholderTextColor={theme.textMuted}
                   value={cliente}
@@ -319,7 +319,7 @@ const CreateSaleScreen = () => {
                   <TouchableOpacity
                     style={[
                       styles.selectorBtn,
-                      { borderColor: productoSeleccionado ? theme.primary : theme.border, backgroundColor: 'rgba(51,65,85,0.4)' },
+                      { borderColor: productoSeleccionado ? theme.primary : theme.border, backgroundColor: theme.cardBackgroundAlt },
                     ]}
                     onPress={() => setModalProductosVisible(true)}
                     activeOpacity={0.7}
@@ -356,7 +356,7 @@ const CreateSaleScreen = () => {
                     <Ionicons name="cube-outline" size={16} color={theme.textSecondary} /> Producto / Servicio
                   </Text>
                   <TextInput
-                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="Nombre del producto o servicio"
                     placeholderTextColor={theme.textMuted}
                     value={productoManual}
@@ -372,7 +372,7 @@ const CreateSaleScreen = () => {
                     <Ionicons name="layers-outline" size={16} color={theme.textSecondary} /> Cantidad
                   </Text>
                   <TextInput
-                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0"
                     placeholderTextColor={theme.textMuted}
                     value={cantidad}
@@ -389,7 +389,7 @@ const CreateSaleScreen = () => {
                     )}
                   </Text>
                   <TextInput
-                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border }]}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0.00"
                     placeholderTextColor={theme.textMuted}
                     value={total}
@@ -411,7 +411,7 @@ const CreateSaleScreen = () => {
                         colors={
                           metodoPago === metodo
                             ? ['rgba(99, 102, 241, 0.4)', 'rgba(79, 70, 229, 0.4)']
-                            : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                            : [theme.cardBackgroundAlt, theme.cardBackground]
                         }
                         style={[styles.optionGradient, metodoPago === metodo && styles.optionSelected]}
                       >
@@ -436,7 +436,7 @@ const CreateSaleScreen = () => {
                         colors={
                           estado === est.id
                             ? [`${est.color}40`, `${est.color}30`]
-                            : ['rgba(51, 65, 85, 0.4)', 'rgba(30, 41, 59, 0.4)']
+                            : [theme.cardBackgroundAlt, theme.cardBackground]
                         }
                         style={[styles.optionGradient, estado === est.id && { borderColor: est.color }]}
                       >

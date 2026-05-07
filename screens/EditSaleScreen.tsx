@@ -189,9 +189,9 @@ const EditSaleScreen = () => {
                   <Ionicons name="person-outline" size={16} color="#94a3b8" /> Cliente
                 </Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Nombre del cliente"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={cliente}
                   onChangeText={setCliente}
                 />
@@ -203,9 +203,9 @@ const EditSaleScreen = () => {
                   <Ionicons name="cube-outline" size={16} color="#94a3b8" /> Producto
                 </Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                   placeholder="Nombre del producto"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={theme.textMuted}
                   value={producto}
                   onChangeText={setProducto}
                 />
@@ -218,9 +218,9 @@ const EditSaleScreen = () => {
                     <Ionicons name="layers-outline" size={16} color="#94a3b8" /> Cantidad
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={cantidad}
                     onChangeText={setCantidad}
                     keyboardType="numeric"
@@ -232,9 +232,9 @@ const EditSaleScreen = () => {
                     <Ionicons name="cash-outline" size={16} color="#94a3b8" /> Total ($)
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: theme.textPrimary, borderColor: theme.border, backgroundColor: theme.cardBackgroundAlt }]}
                     placeholder="0.00"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor={theme.textMuted}
                     value={total}
                     onChangeText={setTotal}
                     keyboardType="decimal-pad"
