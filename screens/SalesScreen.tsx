@@ -230,14 +230,42 @@ const SalesScreen = () => {
                 <View style={styles.actionButtons}>
                   <TouchableOpacity
                     style={styles.actionButton}
-                    onPress={() => navigation.navigate('EditSale', { sale: item })}
+                    onPress={() => {
+                      const next: Sale['estado'] =
+                        item.estado === 'pendiente' ? 'completada' :
+                        item.estado === 'completada' ? 'cancelada' : 'pendiente';
+                      handleUpdateStatus(item.id, next);
+                    }}
                   >
                     <LinearGradient
-                      colors={[`${theme.info}30`, `${theme.info}20`]}
+                      colors={
+                        item.estado === 'pendiente'
+                          ? ['rgba(52, 211, 153, 0.2)', 'rgba(16, 185, 129, 0.2)']
+                          : item.estado === 'completada'
+                          ? ['rgba(239, 68, 68, 0.2)', 'rgba(220, 38, 38, 0.2)']
+                          : ['rgba(251, 191, 36, 0.2)', 'rgba(245, 158, 11, 0.2)']
+                      }
                       style={[styles.actionButtonGradient, { borderColor: theme.border }]}
                     >
-                      <Ionicons name="eye-outline" size={18} color={theme.info} />
-                      <Text style={[styles.actionButtonText, { color: theme.textPrimary }]}>Ver</Text>
+                      <Ionicons
+                        name={
+                          item.estado === 'pendiente' ? 'checkmark-circle-outline' :
+                          item.estado === 'completada' ? 'close-circle-outline' : 'refresh-outline'
+                        }
+                        size={18}
+                        color={
+                          item.estado === 'pendiente' ? theme.success :
+                          item.estado === 'completada' ? theme.error : theme.warning
+                        }
+                      />
+                      <Text style={[styles.actionButtonText, {
+                        color:
+                          item.estado === 'pendiente' ? theme.success :
+                          item.estado === 'completada' ? theme.error : theme.warning
+                      }]}>
+                        {item.estado === 'pendiente' ? 'Completar' :
+                         item.estado === 'completada' ? 'Cancelar' : 'Reabrir'}
+                      </Text>
                     </LinearGradient>
                   </TouchableOpacity>
 
@@ -293,9 +321,7 @@ const SalesScreen = () => {
 
         <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>Ventas</Text>
 
-        <TouchableOpacity style={styles.moreButton}>
-          <Ionicons name="ellipsis-vertical" size={24} color={theme.textPrimary} />
-        </TouchableOpacity>
+        <View style={styles.moreButton} />
       </View>
 
       {/* Error Message */}

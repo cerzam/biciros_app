@@ -184,10 +184,8 @@ export const useSales = (userId?: string): UseSalesReturn => {
     }
   };
 
-  // Refrescar ventas manualmente (aunque el listener ya lo hace automáticamente)
   const refreshSales = () => {
-    setLoading(true);
-    // El listener se encargará de actualizar automáticamente
+    // no-op: onSnapshot mantiene los datos actualizados en tiempo real
   };
 
   return {

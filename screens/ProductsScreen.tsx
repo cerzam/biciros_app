@@ -478,12 +478,12 @@ const ProductsScreen = () => {
     <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <LinearGradient colors={['#1e293b', '#0f172a']} style={styles.modalGradient}>
+          <LinearGradient colors={[theme.cardBackground, theme.cardBackgroundAlt]} style={styles.modalGradient}>
             {/* Modal Header */}
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</Text>
+              <Text style={[styles.modalTitle, { color: theme.textPrimary }]}>{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Ionicons name="close" size={24} color="#fff" />
+                <Ionicons name="close" size={24} color={theme.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -720,9 +720,7 @@ const ProductsScreen = () => {
           <Ionicons name="arrow-back" size={24} color={theme.textPrimary} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>Productos</Text>
-        <TouchableOpacity style={styles.moreButton}>
-          <Ionicons name="ellipsis-vertical" size={24} color={theme.textPrimary} />
-        </TouchableOpacity>
+        <View style={styles.moreButton} />
       </View>
 
       {/* Error */}
