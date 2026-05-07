@@ -34,7 +34,7 @@ interface StatCard {
 
 const DashboardScreen = () => {
   const navigation = useNavigation<NavigationProp>();
-  const { userData, logout } = useAuth();
+  const { user, userData, logout } = useAuth();
   const { sales } = useSales();
   const { theme, isDarkMode } = useTheme();
   const insets = useSafeAreaInsets();
@@ -101,7 +101,11 @@ const DashboardScreen = () => {
     );
   };
 
-  const userName = userData?.nombre || 'Usuario';
+  const formatName = (name: string) =>
+    name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+  const rawName = userData?.nombre_usuario || userData?.nombre || user?.displayName || user?.email?.split('@')[0] || 'Usuario';
+  const userName = formatName(rawName);
 
   const getCurrentDate = () => {
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
