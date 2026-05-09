@@ -3,24 +3,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Colores del tema oscuro (actual)
 export const darkTheme = {
-  background: '#0d1117',
-  backgroundGradient: ['#2a4a6a', '#1a2332', '#0d1117'] as [string, string, string],
-  cardBackground: 'rgba(51, 65, 85, 0.6)',
-  cardBackgroundAlt: 'rgba(30, 41, 59, 0.5)',
-  modalBackground: '#1e293b',
-  textPrimary: '#fff',
-  textSecondary: '#94a3b8',
-  textMuted: '#64748b',
-  primary: '#6366f1',
-  primaryGradient: ['#6366f1', '#4f46e5'] as [string, string],
+  background: '#0a0a0a',
+  backgroundGradient: ['#111111', '#0d0d0d', '#0a0a0a'] as [string, string, string],
+  cardBackground: 'rgba(28, 28, 28, 0.9)',
+  cardBackgroundAlt: 'rgba(18, 18, 18, 0.8)',
+  modalBackground: '#1c1c1c',
+  textPrimary: '#ffffff',
+  textSecondary: '#c0c0c0',
+  textMuted: '#6b6b6b',
+  primary: '#D4AF37',
+  primaryGradient: ['#D4AF37', '#A67C00'] as [string, string],
   success: '#34d399',
   warning: '#fbbf24',
   error: '#ef4444',
   info: '#3b82f6',
-  border: 'rgba(255, 255, 255, 0.1)',
-  navBackground: ['rgba(17, 24, 39, 0.95)', 'rgba(0, 0, 0, 0.95)'] as [string, string],
-  navText: '#64748b',
-  navTextActive: '#3b82f6',
+  border: 'rgba(255, 255, 255, 0.08)',
+  navBackground: ['rgba(10, 10, 10, 0.97)', 'rgba(5, 5, 5, 0.97)'] as [string, string],
+  navText: '#6b6b6b',
+  navTextActive: '#D4AF37',
 };
 
 // Colores del tema claro
