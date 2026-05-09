@@ -1,3 +1,4 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -5,10 +6,21 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import LoginScreen from './login/LoginScreen';
 import AppNavigator from './navigation/AppNavigator';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 function AppContent() {
   const { user, loading } = useAuth();
   const { isDarkMode, theme } = useTheme();
+
+  React.useEffect(() => {
+    if (!loading) {
+      setTimeout(async () => {
+        await SplashScreen.hideAsync();
+      }, 3000);
+    }
+  }, [loading]);
 
   if (loading) {
     return (
